@@ -30,10 +30,10 @@ ASTPtr ASTAlterCommand::clone() const
         res->primary_key = primary_key->clone();
         res->children.push_back(res->primary_key);
     }
-    if (sorting_key)
+    if (order_by)
     {
-        res->sorting_key = sorting_key->clone();
-        res->children.push_back(res->sorting_key);
+        res->order_by = order_by->clone();
+        res->children.push_back(res->order_by);
     }
     if (partition)
     {
@@ -93,7 +93,7 @@ void ASTAlterCommand::formatImpl(
     {
         settings.ostr << (settings.hilite ? hilite_keyword : "") << indent_str << "MODIFY ORDER BY " << (settings.hilite ? hilite_none : "");
         settings.ostr << "(";
-        sorting_key->formatImpl(settings, state, frame);
+        order_by->formatImpl(settings, state, frame);
         settings.ostr << ")";
     }
     else if (type == ASTAlterCommand::DROP_PARTITION)
